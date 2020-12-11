@@ -21,6 +21,17 @@ export class AppComponent implements OnInit {
           Validators.email
         ]
       ],
+      youtube: ['', [
+        Validators.required,
+        Validators.pattern('^(https?\\:\\/\\/)?(www\\.youtube\\.com|youtu\\.?be)\\/.+$')
+      ]
+      ],
+      type: [
+        ''
+      ],
+      color: [
+        ''
+      ],
       password: ['',
         [
           Validators.required,
@@ -35,6 +46,18 @@ export class AppComponent implements OnInit {
 
     this.loadAPI();
   }
+
+  changeType = () => {
+    console.log(this.formLogin.value.type);
+    if (this.formLogin.value.type === 'carro') {
+      this.formLogin.get('color').setValidators([Validators.required]);
+      this.formLogin.get('color').updateValueAndValidity();
+    } else {
+      this.formLogin.get('color').clearValidators();
+      this.formLogin.get('color').updateValueAndValidity();
+    }
+  };
+
 
   loadAPI(): any {
     const response = {

@@ -1,22 +1,47 @@
 <div>
-  <form [formGroup]="formLogin" (submit)="send()">
+  <form [formGroup]="formLogin" (submit)="send()" errorTailor>
 
     <!-- ********** INPUT EMAIL ************** -->
     <div>
       <label for="email">Email</label>
       <input type="text" id="email" formControlName="email">
     </div>
-
+    <hr>
     <!-- ********** INPUT PASSWORD ************** -->
     <div>
       <label for="password">Password</label>
-      <input type="password" id="password" formControlName="password">
+      <input type="password" id="password" formControlName="password"
+             [controlErrorsTpl]="messagePasswordError">
     </div>
-
+    <hr>
+    <!-- ********** INPUT COLOR ************** -->
+    <div *ngIf="formLogin.value?.type === 'carro'">
+      <label for="color">Color</label>
+      <input type="text" id="color" formControlName="color">
+    </div>
+    <hr>
+    <!-- ********** INPUT SELECT ************** -->
+    <div>
+      <label for="select">Tipo de vehiculo</label>
+      <select (change)="changeType()" formControlName="type" name="select" id="select">
+        <option value="moto">Moto</option>
+        <option value="carro">Carro</option>
+        <option value="ninguno" selected>Ninguno</option>
+      </select>
+    </div>
+    <hr>
+    <!-- ********** INPUT GITHUB ************** -->
+    <div>
+      <label for="youtube">Youtube</label>
+      <input type="text" id="youtube" formControlName="youtube">
+      <ng-container *ngTemplateOutlet="messageYoutubeError;context:{error:formLogin.get('youtube').errors}"></ng-container>
+    </div>
+    <hr>
     <!-- ********** INPUT PASSWORD ************** -->
     <div>
       <label for="terms">Terms</label>
-      <input type="checkbox" id="terms" formControlName="terms">
+      <input type="checkbox" id="terms" formControlName="terms" [controlErrorsTpl]="mensajeError" >
+
     </div>
     <!-- ********** BUTTON ************** -->
     <div>
@@ -25,6 +50,31 @@
   </form>
 </div>
 
+
+<!--<div>-->
+<!--  <button type="button" (click)="selectChoose('seller')">Cambiar Validacion</button>-->
+<!--</div>-->
+
+<ng-template let-error let-text="text" #messagePasswordError>
+<!--  {{ error | json }} {{ text }}-->
+  <b>Error:</b>
+  <div *ngIf="error?.minlength">
+    <i>No cumples con los caracteres minimos que son ({{error?.minlength?.requiredLength}}), ingresaste solo: {{error?.minlength?.actualLength}}</i>
+  </div>
+</ng-template>
+
+
+<ng-template let-error let-text="text" #mensajeError> {{ error | json }} {{ text }} </ng-template>
+
+<ng-template #messageYoutubeError let-error="error">
+  <div *ngIf="error?.pattern?.requiredPattern">
+    <b>No es una url correcta</b>
+  </div>
+</ng-template>
+
+<!-- ************* SECOND VIDEO ******************** ---->
 <div>
   Valido: {{formLogin.valid | json}}
 </div>
+
+<br><br>
