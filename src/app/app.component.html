@@ -1,63 +1,73 @@
-<div>
-  <form [formGroup]="formLogin" (submit)="send()" errorTailor>
+<div class="col-4 offset-4 p-4 animate__animated animate__fadeInDown">
+  <h2>Formulario reactivo Angular 11</h2>
+  <form [formGroup]="formLogin" (submit)="send()" class="pt-4 pb-4" errorTailor>
 
     <!-- ********** INPUT EMAIL ************** -->
-    <div>
-      <label for="email">Email</label>
-      <input type="text" id="email" formControlName="email">
+    <div  class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input type="text" class="form-control shadow" id="email" formControlName="email">
     </div>
-    <hr>
     <!-- ********** INPUT PASSWORD ************** -->
-    <div>
-      <label for="password">Password</label>
-      <input type="password" id="password" formControlName="password"
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password"  class="form-control shadow" id="password" formControlName="password"
              [controlErrorsTpl]="messagePasswordError">
     </div>
-    <hr>
     <!-- ********** INPUT COLOR ************** -->
-    <div *ngIf="formLogin.value?.type === 'carro'">
-      <label for="color">Color</label>
-      <input type="text" id="color" formControlName="color">
+    <div  class="mb-3" *ngIf="formLogin.value?.type === 'carro'">
+      <label for="color" class="form-label">Color</label>
+      <input type="text" id="color" class="form-control shadow" formControlName="color">
     </div>
-    <hr>
+
     <!-- ********** INPUT SELECT ************** -->
-    <div>
-      <label for="select">Tipo de vehiculo</label>
-      <select (change)="changeType()" formControlName="type" name="select" id="select">
+    <div class="mb-3">
+      <label for="select" class="form-label">Tipo</label>
+      <select class="form-control shadow" (change)="changeType()" formControlName="type" name="select" id="select">
         <option value="moto">Moto</option>
         <option value="carro">Carro</option>
         <option value="ninguno" selected>Ninguno</option>
       </select>
     </div>
-    <hr>
+
     <!-- ********** INPUT GITHUB ************** -->
-    <div>
-      <label for="youtube">Youtube</label>
-      <input type="text" id="youtube" formControlName="youtube">
+    <div class="mb-3">
+      <label for="youtube" class="form-label">Youtube URL</label>
+      <input type="text" class="form-control shadow" id="youtube" formControlName="youtube">
       <ng-container *ngTemplateOutlet="messageYoutubeError;context:{error:formLogin.get('youtube').errors}"></ng-container>
     </div>
-    <hr>
     <!-- ********** INPUT PASSWORD ************** -->
-    <div>
-      <label for="terms">Terms</label>
-      <input type="checkbox" id="terms" formControlName="terms" [controlErrorsTpl]="mensajeError" >
+    <div class="mb-3 d-flex">
+      <div class="form-check">
+        <input class="form-check-input" formControlName="terms" [controlErrorsTpl]="mensajeError"  type="checkbox" value="" id="flexCheckDefault">
+        <label class="form-check-label" for="flexCheckDefault">
+          Terms and Conditions
+        </label>
+      </div>
 
     </div>
+
     <!-- ********** BUTTON ************** -->
-    <div>
-      <button [disabled]="formLogin.invalid">Send</button>
+    <div class="w-100">
+      <button class="btn-primary btn btn-block w-100" [disabled]="formLogin.invalid">Send</button>
+    </div>
+
+
+    <!--- ********************* RAW CONTENT ***************** --->
+    <div class="w-100 pt-4">
+      <code class="w-100">
+          <b>Estado del formulario:</b> {{formLogin.valid | json}}
+      </code>
     </div>
   </form>
+
 </div>
 
 
-<!--<div>-->
-<!--  <button type="button" (click)="selectChoose('seller')">Cambiar Validacion</button>-->
-<!--</div>-->
+<!---- ********************* ZONE TEMPLATES ****************** --->
 
 <ng-template let-error let-text="text" #messagePasswordError>
 <!--  {{ error | json }} {{ text }}-->
-  <b>Error:</b>
+  <span class="control-error">Error:</span>
   <div *ngIf="error?.minlength">
     <i>No cumples con los caracteres minimos que son ({{error?.minlength?.requiredLength}}), ingresaste solo: {{error?.minlength?.actualLength}}</i>
   </div>
@@ -67,14 +77,7 @@
 <ng-template let-error let-text="text" #mensajeError> {{ error | json }} {{ text }} </ng-template>
 
 <ng-template #messageYoutubeError let-error="error">
-  <div *ngIf="error?.pattern?.requiredPattern">
-    <b>No es una url correcta</b>
+  <div class="control-error" *ngIf="error?.pattern?.requiredPattern">
+    <span>No es una url correcta</span>
   </div>
 </ng-template>
-
-<!-- ************* SECOND VIDEO ******************** ---->
-<div>
-  Valido: {{formLogin.valid | json}}
-</div>
-
-<br><br>
